@@ -1,0 +1,13 @@
+image: python
+
+before_script:
+  - pip3 install mkdocs
+
+pages:
+  script:
+  - mkdocs build -d public
+  artifacts:
+    paths:
+    - public
+  only:
+  - master

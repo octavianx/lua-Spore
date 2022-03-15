@@ -1,0 +1,17 @@
+
+/bed
+/public
+/MANIFEST
+/*.tar
+/*.tar.gz
+/*.src.rock
+/*.patch
+/*.bak
+/*.html
+/*.txt
+
+/luacov.*
+/*.lua
+/*.json
+/*.png
+

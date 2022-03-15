@@ -1,0 +1,50 @@
+language: python
+sudo: false
+
+env:
+  - LUA="lua 5.1"       COMPAT=default  CFLAGS=""
+  - LUA="lua 5.2"       COMPAT=default  CFLAGS=""
+  - LUA="lua 5.2"       COMPAT=none     CFLAGS=""
+  - LUA="lua 5.3"       COMPAT=default  CFLAGS=""
+  - LUA="lua 5.3"       COMPAT=none     CFLAGS=""
+  # - LUA="lua 5.3"       COMPAT=default  CFLAGS="-DLUA_NOCVTN2S -DLUA_NOCVTS2N"
+  # - LUA="lua 5.3"       COMPAT=default  CFLAGS="-DLUA_32BITS"
+  # - LUA="lua 5.3"       COMPAT=default  CFLAGS="-DLUA_FLOAT_TYPE=3"
+  - LUA="luajit 2.0"    COMPAT=none     CFLAGS=""
+  - LUA="luajit 2.0"    COMPAT=all      CFLAGS=""
+  # - LUA="luajit 2.1"    COMPAT=none     CFLAGS=""
+  # - LUA="luajit 2.1"    COMPAT=all      CFLAGS=""
+
+addons:
+  apt:
+    packages:
+    - libssl-dev
+    - libexpat1-dev
+    - libyaml-dev
+
+before_install:
+  - pip install hererocks
+  - hererocks HERE --$LUA --compat $COMPAT --cflags="$CFLAGS" --no-readline --luarocks latest --verbose
+  - hererocks HERE --show
+  - source HERE/bin/activate
+
+install:
+  - luarocks install luacov-coveralls
+  - luarocks install luacheck
+  - luarocks install lua-testassertion
+  - luarocks install luasocket
+  - luarocks install luasec
+  - luarocks install luaexpat
+  - luarocks install luajson
+  - luarocks install lualogging
+  - luarocks install luaossl
+  - luarocks install lyaml 6.1.1
+
+script:
+  - make luacheck
+  - make test
+
+branches:
+  only:
+    - master
+
